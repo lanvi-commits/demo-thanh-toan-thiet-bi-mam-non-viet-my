@@ -1,27 +1,20 @@
-# Demo sửa trang Thanh toán: Thiết bị mầm non Việt Mỹ
+# Demo trang Thanh toán — Thiết bị mầm non Việt Mỹ
 
-Bản dựng lại phần nội dung trang https://website-demo-02.thcmedia.vn/checkout/ (chụp ngày 23/10/2026) bằng đúng markup, class và CSS của theme `thcmedia-atlas`, rồi áp 7 ý review của mục **Checkout** trong tab "Review tổng thể website" (dòng 224–230).
+Trang Thanh toán của site đang dựng (website-demo-02.thcmedia.vn/checkout/) sau khi áp 7 ý review mục **Checkout**, tab "Review tổng thể website" (dòng 224–230):
 
-**Xem demo:** https://lanvi-commits.github.io/demo-thanh-toan-thiet-bi-mam-non-viet-my/
+1. Bắt buộc đủ 6 ô có dấu *: thêm Số điện thoại, Tỉnh / Thành phố, Phường / Xã; SĐT phải đủ 10 số, bắt đầu bằng 0 (dòng 224)
+2. Hộp lỗi thành 1 hàng phía trên form (không còn chen thành cột thứ 3); ô lỗi viền đỏ + chữ lỗi ngay dưới; lỗi dùng đúng chữ trên form: "Họ và tên", "Địa chỉ chi tiết", "Email liên hệ" (dòng 225)
+3. Tóm tắt đơn: badge "7 ngày đổi trả" theo chính sách; tên SP tối đa 2 dòng + dòng "Phân loại" và "Ghi chú" (dòng 226)
+4. Ô tick "Xuất hoá đơn công ty" mở 3 ô: Tên đơn vị · Mã số thuế · Địa chỉ xuất hoá đơn; thêm "Ghi chú đơn hàng" (dòng 227)
+5. Phương thức thanh toán bọc `<fieldset>` + `<legend>`, đổi icon người → icon ví (dòng 228)
+6. Danh mục Tỉnh / Thành phố dùng chung với form báo giá (34 mục, đúng tên) (dòng 229)
+7. Bỏ dòng "Chuyển khoản Ngân hàng" bị dư trong hộp lưu ý (dòng 230)
 
-Thanh trên cùng có công tắc **Hiện tại (live) ↔ Đề xuất**, 4 kịch bản thử (form trống · bấm đặt hàng khi trống · SĐT 9 số, chưa chọn phường · điền đủ + hoá đơn) và khung **Desktop / Mobile 390**. Bản "Hiện tại" khớp live từng px. Form chạy thật trong trình duyệt nhưng **không gửi dữ liệu đi đâu**.
+Header, breadcrumb, footer, thanh liên hệ nổi giữ nguyên như site. Phần mới chỉ gồm `<div class="custom-checkout-page">`, `<style id="vmx-change">` (dán cuối `woocommerce-checkout.css`) và `<script id="vmx-page-js">`. Bấm "Xác nhận đặt hàng" khi để trống để xem cách báo lỗi.
 
-## 7 thay đổi
+- Xem trực tiếp: https://lanvi-commits.github.io/demo-thanh-toan-thiet-bi-mam-non-viet-my/
+- Trang mẫu, không phải site thật (có `noindex`). **Form không gửi đi đâu:** đã gỡ `checkout.js` của WooCommerce, WooCommerce Blocks và Contact Form 7; `<script id="vmx-demo-guard">` chỉ dành cho demo, không đưa lên site.
+- Trong file demo, `page.js` tự kiểm ô bắt buộc / SĐT / mã số thuế để mô phỏng phản hồi máy chủ. Trên site, phần kiểm này phải làm ở PHP (hook `woocommerce_after_checkout_validation`), JS chỉ đọc lỗi máy chủ trả về để đánh dấu từng ô.
+- Ghi chú SP "Giao kèm hướng dẫn lắp ráp" là câu mẫu.
 
-| # | Dòng sheet | Chỗ | Đề xuất |
-|---|---|---|---|
-| 1 | 224 | Ô bắt buộc | Chặn đủ 6 ô có dấu * (live chỉ chặn 3: Họ tên, Địa chỉ, Email). SĐT phải đủ 10 số, bắt đầu bằng 0 |
-| 2 | 225 | Báo lỗi | Hộp lỗi thành 1 hàng phía trên 2 cột (live chen thành cột thứ 3, ép cột form 842 → 471px). Ô lỗi viền đỏ + chữ lỗi ngay dưới. Lỗi dùng đúng chữ trên form ("Họ và tên", không phải "Mục Tên") |
-| 3 | 226 | Tóm tắt đơn | Badge "7 ngày đổi trả" theo chính sách (live: 30 ngày). Tên SP tối đa 2 dòng + dòng "Phân loại" + "Ghi chú" |
-| 4 | 227 | Hoá đơn, ghi chú | Ô tick "Xuất hoá đơn công ty" mở 3 ô: Tên đơn vị · Mã số thuế · Địa chỉ xuất hoá đơn. Thêm "Ghi chú đơn hàng" |
-| 5 | 228 | Phương thức thanh toán | Bọc `<fieldset>` + `<legend>`, đổi icon người → icon ví |
-| 6 | 229 | Tỉnh / Thành phố | Dùng chung danh mục của form báo giá (34 mục). Live ghi sai "Thành phố Bắc Ninh / Quảng Ninh / Đồng Nai" |
-| 7 | 230 | Hộp lưu ý | Bỏ dòng "Chuyển khoản Ngân hàng" bị dư |
-
-Cuối trang demo có **ghi chú cho DEV**: đoạn PHP (hook WooCommerce), markup template, danh mục tỉnh, JS cho `checkout-custom.js` và khối CSS dán cuối `woocommerce-checkout.css`.
-
-## Ghi chú
-
-- Phường/xã chép từ provinces.open-api.vn/api/v2 (API site đang dùng), nhúng sẵn trong file.
-- Ghi chú SP "Giao kèm hướng dẫn lắp ráp" và thông tin trong kịch bản điền sẵn là dữ liệu mẫu.
-- File được sinh bằng `build.py` (thư mục làm việc trên máy), không sửa tay `index.html`.
+`index.html` là bản build từ `Design UX-UI/brands/viet-my/nguyen-lieu/2026-10-23_thanh-toan-trang-build/` (sửa `section.html` / `change.css` / `page.js` → chạy `build.py` → commit + push). Đừng sửa tay `index.html`.
